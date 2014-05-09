@@ -4,7 +4,9 @@ class CommentsController < ApplicationController
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    @blog = Blog.find(params[:blog_id])
+    logger.log(@blog.inspect)
+    @comments = @blog.comments
   end
 
   # GET /comments/1
@@ -14,12 +16,13 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-   logger.error " new comment " + params.inspect 
-   logger.error " new comment " + @blog.inspect
-   @blog = Blog.find(params[:blog_id])
-   logger.error " new comment " + @blog.inspect
-    # @comment = Comment.new
-  end
+   # logger.error " new comment " + params.inspect 
+   # logger.error " new comment " + @blog.inspect
+   # @blog = Blog.find(params[:blog_id])
+   # logger.error " new comment " + @blog.inspect
+   @comment = Comment.new
+
+ end
 
   # GET /comments/1/edit
   def edit
@@ -74,7 +77,7 @@ end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
-      @comment = Comment.find(params[:id])
+      @comment = Blog.find(params[:id], params[:blog_id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

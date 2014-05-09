@@ -18,8 +18,6 @@
       <th>Title</th>
       <th>Content</th>
       <th></th>
-      <th></th>
-      <th></th>
     </tr>
   </thead>
 
@@ -28,9 +26,7 @@
       <tr>
         <td><%= comment.title %></td>
         <td><%= comment.created_at %></td>
-        <td><%= link_to 'Show', comment %></td>
-        <td><%= link_to 'Edit', edit_comment_path(comment) %></td>
-        <td><%= link_to 'Destroy', comment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Edit', edit_blog_comment_path(id: comment._id, blog_id:@blog._id) %></td>
       </tr>
     <% end %>
   </tbody>
