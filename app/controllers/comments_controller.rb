@@ -14,7 +14,11 @@ class CommentsController < ApplicationController
 
   # GET /comments/new
   def new
-    @comment = Comment.new
+   logger.error " new comment " + params.inspect 
+   logger.error " new comment " + @blog.inspect
+   @blog = Blog.find(params[:blog_id])
+   logger.error " new comment " + @blog.inspect
+    # @comment = Comment.new
   end
 
   # GET /comments/1/edit
@@ -24,18 +28,24 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(comment_params)
 
-    respond_to do |format|
-      if @comment.save
-        format.html { redirect_to @comment, notice: 'Comment was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @comment }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
-      end
+   @blog = Blog.find(params[:blog_id])
+   logger.error(@blog._id)
+   @comment = Comment.new(title: params[:title], content: params[:content])
+   @blog.comments << @comment
+   @blog.save!
+   #@comment = Comment.new(comment_params)
+   #@blog.push @comment 
+   respond_to do |format|
+    if @comment.save
+      format.html { redirect_to @blog, notice: 'Comment was successfully created.' }
+      format.json { render action: 'show', status: :created, location: @comment }
+    else
+      format.html { render action: 'new' }
+      format.json { render json: @comment.errors, status: :unprocessable_entity }
     end
   end
+end
 
   # PATCH/PUT /comments/1
   # PATCH/PUT /comments/1.json
@@ -69,6 +79,6 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-      params.require(:comment).permit(:title, :content)
+      params.require(:comment).permit(:title, :content, :blog_id, :commit)
     end
-end
+  end
