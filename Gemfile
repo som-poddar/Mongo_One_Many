@@ -8,7 +8,7 @@ gem 'sqlite3'
 gem 'mongoid', git: 'git://github.com/mongoid/mongoid.git'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
-
+gem 'debugger'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 

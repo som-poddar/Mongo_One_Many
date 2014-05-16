@@ -18,9 +18,11 @@ class CommentsController < ApplicationController
   def new
    # logger.error " new comment " + params.inspect 
    # logger.error " new comment " + @blog.inspect
-   # @blog = Blog.find(params[:blog_id])
+   
+   @blog = Blog.find(params[:blog_id])
    # logger.error " new comment " + @blog.inspect
-   @comment = Comment.new
+   @comment = @blog.comments.build 
+   #Comment.new
 
  end
 
@@ -31,16 +33,15 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-
    @blog = Blog.find(params[:blog_id])
-   logger.error(@blog._id)
+   params.inspect
    @comment = Comment.new(title: params[:title], content: params[:content])
    @blog.comments << @comment
-   @blog.save!
+   
    #@comment = Comment.new(comment_params)
    #@blog.push @comment 
    respond_to do |format|
-    if @comment.save
+    if @blog.save! #@comment.save
       format.html { redirect_to @blog, notice: 'Comment was successfully created.' }
       format.json { render action: 'show', status: :created, location: @comment }
     else
@@ -77,7 +78,8 @@ end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
-      @comment = Blog.find(params[:id], params[:blog_id])
+      @blog = Blog.find(params[:blog_id])
+      @comment = @blog.comments.where(:_id => params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
